@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#dceef7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Il mio piccolo">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Il mio piccolo 🧸</title>
+<style>
+:root{--blue:#dceef7;--blue2:#b9d9e9;--ink:#344b5b;--cream:#fffdf8;--pink:#f8e5e8;--green:#e5f0e7;--line:#e4edf0}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#edf7fb,#fffaf5);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+header{padding:26px 18px 20px;text-align:center;background:var(--blue);border-radius:0 0 28px 28px}
+header .bear{font-size:48px}h1{margin:4px 0;font-size:27px}header p{margin:5px 0 0}
+main{max-width:760px;margin:18px auto;padding:0 14px 35px}
+.panel{background:var(--cream);border:1px solid var(--line);border-radius:20px;padding:17px;margin:13px 0;box-shadow:0 4px 16px #5870800c}
+.counter{text-align:center;background:#fff;border-radius:18px;padding:14px}.counter strong{font-size:36px;color:#5685a0}
+nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:15px 0}
+nav button,.action{border:0;border-radius:14px;padding:10px 13px;background:var(--blue);color:var(--ink);font-weight:650;font-size:14px}
+nav button.active{background:#8fb9d0;color:white}
+h2{font-size:19px;margin:0 0 12px}label{display:block;font-size:13px;font-weight:650;margin:9px 0 4px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d8e4e9;border-radius:11px;background:white;color:var(--ink);font:inherit}
+textarea{min-height:78px;resize:vertical}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px}
+.action{margin-top:12px;background:#8fb9d0;color:white;cursor:pointer}.secondary{background:#edf3f5;color:var(--ink)}
+.entry{padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.entry small{display:block;color:#718694;margin-top:3px}.entry button{border:0;background:var(--pink);border-radius:9px;padding:6px 9px;color:#784f59}
+.empty{color:#82939c;font-size:14px}.hint{font-size:12px;color:#718694;line-height:1.5}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="bear">🧸</div><h1>Il mio piccolo</h1><p>Un diario dolce per ogni piccolo progresso 💙</p></header>
+<main>
+<section class="panel counter">
+  <div>Il tuo piccolo è con noi da</div>
+  <strong id="days">—</strong>
+  <div>giorni 💙</div>
+  <p class="hint">Data di nascita: 8 settembre 2026</p>
+</section>
+<nav id="tabs">
+<button class="active" data-tab="feed">🍼 Poppate</button>
+<button data-tab="sleep">🌙 Sonno</button>
+<button data-tab="diaper">🧷 Pannolini</button>
+<button data-tab="growth">📏 Crescita</button>
+<button data-tab="diary">📖 Diario</button>
+<button data-tab="visits">🩺 Visite</button>
+</nav>
+
+<section class="panel tab" id="feed">
+<h2>🍼 Registra una poppata</h2>
+<div class="grid">
+<div><label for="feedDate">Data e ora</label><input id="feedDate" type="datetime-local"></div>
+<div><label for="feedType">Tipo</label><select id="feedType"><option>Latte artificiale</option><option>Latte materno</option><option>Allattamento misto</option><option>Altro</option></select></div>
+<div><label for="feedQty">Quantità (ml), se utile</label><input id="feedQty" type="number" min="0" placeholder="es. 120"></div>
+</div>
+<label for="feedNote">Note</label><input id="feedNote" placeholder="Ad esempio: ha mangiato tranquillo">
+<button class="action" onclick="addEntry('feed')">Salva poppata</button><div id="feedList"></div>
+</section>
+
+<section class="panel tab" id="sleep" hidden>
+<h2>🌙 Registra il sonno</h2>
+<div class="grid"><div><label for="sleepStart">Inizio</label><input id="sleepStart" type="datetime-local"></div><div><label for="sleepEnd">Fine</label><input id="sleepEnd" type="datetime-local"></div></div>
+<label for="sleepNote">Note</label><input id="sleepNote" placeholder="Es. pisolino pomeridiano">
+<button class="action" onclick="addEntry('sleep')">Salva sonno</button><div id="sleepList"></div>
+</section>
+
+<section class="panel tab" id="diaper" hidden>
+<h2>🧷 Cambio pannolino</h2>
+<div class="grid"><div><label for="diaperDate">Data e ora</label><input id="diaperDate" type="datetime-local"></div><div><label for="diaperType">Tipo</label><select id="diaperType"><option>Pipì</option><option>Pupù</option><option>Entrambi</option></select></div></div>
+<label for="diaperNote">Note</label><input id="diaperNote" placeholder="Note facoltative">
+<button class="action" onclick="addEntry('diaper')">Salva cambio</button><div id="diaperList"></div>
+</section>
+
+<section class="panel tab" id="growth" hidden>
+<h2>📏 Crescita</h2>
+<div class="grid"><div><label for="growthDate">Data</label><input id="growthDate" type="date"></div><div><label for="weight">Peso (kg)</label><input id="weight" type="number" step="0.001" min="0" placeholder="es. 4.250"></div><div><label for="length">Lunghezza (cm)</label><input id="length" type="number" step="0.1" min="0" placeholder="es. 54"></div></div>
+<label for="growthNote">Note</label><input id="growthNote" placeholder="Note facoltative">
+<button class="action" onclick="addEntry('growth')">Salva misurazione</button><div id="growthList"></div>
+</section>
+
+<section class="panel tab" id="diary" hidden>
+<h2>📖 Piccoli ricordi</h2>
+<label for="diaryDate">Data</label><input id="diaryDate" type="date">
+<label for="diaryText">Racconta un momento speciale</label><textarea id="diaryText" placeholder="Oggi hai fatto..."></textarea>
+<button class="action" onclick="addEntry('diary')">Salva ricordo</button><div id="diaryList"></div>
+</section>
+
+<section class="panel tab" id="visits" hidden>
+<h2>🩺 Visite e appuntamenti</h2>
+<div class="grid"><div><label for="visitDate">Data e ora</label><input id="visitDate" type="datetime-local"></div><div><label for="visitTitle">Titolo</label><input id="visitTitle" placeholder="Es. controllo pediatra"></div></div>
+<label for="visitNote">Note</label><textarea id="visitNote" placeholder="Appunti da ricordare"></textarea>
+<button class="action" onclick="addEntry('visits')">Salva appuntamento</button><div id="visitsList"></div>
+</section>
+
+<section class="panel">
+<h2>💾 I tuoi dati</h2>
+<p class="hint">Le registrazioni vengono salvate in questo browser sul dispositivo. Non si sincronizzano automaticamente con altri telefoni. Puoi esportare una copia di sicurezza.</p>
+<button class="action secondary" onclick="exportData()">Esporta dati</button>
+<label for="importFile">Importa una copia di sicurezza</label><input id="importFile" type="file" accept="application/json" onchange="importData(event)">
+<p class="hint">Conserva il file esportato in un posto sicuro. Evita di inserire informazioni personali non necessarie.</p>
+</section>
+</main>
+<script>
+const birth = new Date(2026,8,8);
+function updateDays(){const now=new Date();const d=Math.max(0,Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-birth)/86400000)+1);document.getElementById('days').textContent=d}
+updateDays();
+const keys={feed:'Poppata',sleep:'Sonno',diaper:'Pannolino',growth:'Crescita',diary:'Ricordo',visits:'Visita'};
+const storeKey='il-mio-piccolo-v1';
+function getData(){try{return JSON.parse(localStorage.getItem(storeKey)||'{}')}catch{return {}}}
+function saveData(data){localStorage.setItem(storeKey,JSON.stringify(data))}
+function val(id){return document.getElementById(id).value}
+function addEntry(type){
+ let item={id:Date.now(),created:new Date().toISOString()};
+ if(type==='feed'){item.date=val('feedDate');item.type=val('feedType');item.qty=val('feedQty');item.note=val('feedNote')}
+ if(type==='sleep'){item.start=val('sleepStart');item.end=val('sleepEnd');item.note=val('sleepNote')}
+ if(type==='diaper'){item.date=val('diaperDate');item.type=val('diaperType');item.note=val('diaperNote')}
+ if(type==='growth'){item.date=val('growthDate');item.weight=val('weight');item.length=val('length');item.note=val('growthNote')}
+ if(type==='diary'){item.date=val('diaryDate');item.text=val('diaryText')}
+ if(type==='visits'){item.date=val('visitDate');item.title=val('visitTitle');item.note=val('visitNote')}
+ const data=getData();data[type]=data[type]||[];data[type].unshift(item);saveData(data);render();
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fmt(s){if(!s)return '';const d=new Date(s);return isNaN(d)?esc(s):d.toLocaleString('it-IT',{dateStyle:'short',timeStyle:s.includes('T')?'short':undefined})}
+function details(t,x){
+ if(t==='feed')return `<b>${esc(x.type)}</b> ${x.qty?`· ${esc(x.qty)} ml`:''}<small>${fmt(x.date)} ${esc(x.note)}</small>`;
+ if(t==='sleep')return `<b>Riposo</b><small>${fmt(x.start)} – ${fmt(x.end)} ${esc(x.note)}</small>`;
+ if(t==='diaper')return `<b>${esc(x.type)}</b><small>${fmt(x.date)} ${esc(x.note)}</small>`;
+ if(t==='growth')return `<b>${x.weight?esc(x.weight)+' kg':''} ${x.length? '· '+esc(x.length)+' cm':''}</b><small>${fmt(x.date)} ${esc(x.note)}</small>`;
+ if(t==='diary')return `<b>${fmt(x.date)}</b><small>${esc(x.text)}</small>`;
+ return `<b>${esc(x.title||'Appuntamento')}</b><small>${fmt(x.date)} ${esc(x.note)}</small>`;
+}
+function render(){const data=getData();for(const t of Object.keys(keys)){const el=document.getElementById(t+'List');if(!el)continue;const arr=data[t]||[];el.innerHTML=arr.length?arr.map(x=>`<div class="entry"><div>${details(t,x)}</div><button onclick="removeEntry('${t}',${x.id})">Elimina</button></div>`).join(''):'<p class="empty">Nessuna registrazione ancora.</p>'}}
+function removeEntry(t,id){if(!confirm('Vuoi eliminare questa registrazione?'))return;const d=getData();d[t]=(d[t]||[]).filter(x=>x.id!==id);saveData(d);render()}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tab').forEach(x=>x.hidden=x.id!==b.dataset.tab)}));
+function exportData(){const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='il-mio-piccolo-dati.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||typeof d!=='object')throw 0;saveData(d);render();alert('Dati importati!')}catch{alert('Il file non è valido.')}};r.readAsText(f)}
+function setDefault(id){const e=document.getElementById(id);if(e&&!e.value)e.value=new Date().toISOString().slice(0,16)}
+['feedDate','sleepStart','sleepEnd','diaperDate','growthDate','diaryDate','visitDate'].forEach(setDefault);
+render();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}))}
+</script>
+</body></html>
