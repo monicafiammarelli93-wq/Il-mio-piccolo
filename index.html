@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#dceefa">
+<title>Il mio piccolo</title>
+<style>
+:root{--ink:#35536b;--pale:#f4f9fc}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(160deg,#e8f4fb,#f8f5ee);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);display:grid;place-items:center;padding:22px}
+main{width:min(100%,440px);text-align:center}
+.card{background:rgba(255,255,255,.9);border:1px solid #d9e9f2;border-radius:28px;padding:28px 22px;box-shadow:0 12px 35px #6e9ab21c}
+.animals{font-size:40px;letter-spacing:8px;margin-bottom:8px}
+h1{font-size:29px;margin:4px 0 8px}
+.subtitle{font-size:15px;color:#69869a;margin:0 0 24px}
+.counter{background:var(--pale);border-radius:22px;padding:22px 12px;margin:0 auto 18px}
+.number{font-size:76px;line-height:1;font-weight:800;color:#6099bd;letter-spacing:-3px}
+.days{font-size:18px;font-weight:700;margin-top:8px}
+.date{font-size:14px;color:#718b9d;margin-top:17px}
+.note{font-size:13px;line-height:1.5;color:#7b93a2;margin:18px 2px 0}
+footer{font-size:12px;color:#8ba0ad;margin-top:16px}
+</style>
+</head>
+<body>
+<main><section class="card">
+<div class="animals" aria-hidden="true">🐻 🦊 🐘</div>
+<h1>Il mio piccolo</h1>
+<p class="subtitle">Ogni giorno una nuova meraviglia 💙</p>
+<div class="counter"><div class="number" id="days">—</div><div class="days">giorni di vita</div></div>
+<div class="date">Nato l'8 settembre 2026</div>
+<p class="note" id="message"></p>
+</section><footer>Un piccolo ricordo da custodire 🧸</footer></main>
+<script>
+const birth=new Date(2026,8,8),today=new Date();today.setHours(0,0,0,0);
+const days=Math.floor((today-birth)/86400000);
+document.getElementById('days').textContent=days>=0?days:'—';
+document.getElementById('message').textContent=days>=0?'Sono passati '+days+' giorni dal tuo arrivo. Ogni giorno è speciale! 💙':'Il conto dei giorni inizierà dalla data di nascita.';
+</script>
+</body></html>
