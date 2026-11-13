@@ -1,4 +1,4 @@
-const CACHE_NAME = 'il-mio-piccolo-v2';
+const CACHE_NAME = 'il-mio-piccolo-v3';
 
 const CORE = [
   './',
@@ -19,7 +19,9 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
       )
     )
   );
