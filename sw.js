@@ -1,4 +1,4 @@
-const CACHE_NAME = 'il-mio-piccolo-v3';
+const CACHE_NAME = 'il-mio-piccolo-v4';
 
 const CORE = [
   './',
