@@ -3,7 +3,7 @@ const CACHE_NAME = 'il-mio-piccolo-v3';
 const CORE = [
   './',
   './index.html',
-  './manifest.json',
+  './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png'
 ];
